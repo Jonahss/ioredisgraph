@@ -1,4 +1,4 @@
-let RedisGraph = require('./');
+let RedisGraph = require('ioredisgraph');
 
 async function demo () {
   let graph = new RedisGraph('MotoGP')
