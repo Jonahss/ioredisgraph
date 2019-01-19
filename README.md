@@ -1,6 +1,6 @@
-## ioredisgraph ##
+# ioredisgraph #
 
-A javascript client for [RedisGraph](https://oss.redislabs.com/redisgraph/) based of of the excellent [ioredis](https://github.com/luin/ioredis) client.
+A javascript client for [RedisGraph](https://oss.redislabs.com/redisgraph/) based on the excellent [ioredis](https://github.com/luin/ioredis) client.
 Literally based off ioredis. This module wraps ioredis, adds a couple commands, and returns an array of objects from each query (as well as the query meta information).
 
 ```
@@ -21,20 +21,24 @@ async function demo () {
 demo()
 ```
 
-### Usage ###
+## Usage ##
 
-#### Constructor ####
+### Constructor ###
 
 ioredisgraph has all the same constructor options as ioredis, but adds a `graphName` argument.
 
 
 Add graph name as first argument to constructor:
+
 `let graph = new RedisGraph('DEMO_GRAPH')`
+
 `let graph = new RedisGraph('DEMO_GRAPH', 6379)`
+
 or add to options object:
+
 `let graph = new RedisGraph({graphName: 'DEMO_GRAPH', port: 6379})`
 
-#### Methods ####
+### Methods ###
 These methods are added. All other methods usually available to an ioredis client are accessible.
 
 __graph.query(cypherString)__
