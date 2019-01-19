@@ -1,0 +1,32 @@
+{
+  "name": "ioredisgraph",
+  "version": "1.0.0",
+  "description": "Node.js client for RedisGraph, by wrapping ioredis module",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Jonahss/ioredisgraph.git"
+  },
+  "keywords": [
+    "redis",
+    "redisgraph",
+    "ioredis"
+  ],
+  "author": "jonahss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jonahss/ioredisgraph/issues"
+  },
+  "homepage": "https://github.com/Jonahss/ioredisgraph#readme",
+  "dependencies": {
+    "camelcase": "^5.0.0",
+    "ioredis": "^4.3.0",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "ava": "^1.1.0"
+  }
+}
