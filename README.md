@@ -4,7 +4,7 @@ A javascript client for [RedisGraph](https://oss.redislabs.com/redisgraph/) base
 Literally based off ioredis. This module wraps ioredis, adds a couple commands, and returns an array of objects from each query (as well as the query meta information).
 
 ```
-let RedisGraph = require('./');
+let RedisGraph = require('ioredisgraph');
 
 async function demo () {
   let graph = new RedisGraph('MotoGP')
