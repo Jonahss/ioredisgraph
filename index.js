@@ -8,7 +8,7 @@ class RedisGraph extends Redis {
       super(graphName)
       this.graphName = graphName.graphName
     } else {
-      super(args)
+      super(...args)
       this.graphName = graphName
     }
 
