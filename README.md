@@ -50,3 +50,7 @@ __graph.delete()__
 Deletes database
 
 __graph.explain(cypherString)__
+
+### Performance ###
+
+RedisGraph supports a special `--compact` argument on queries, which improves performance by having responses include enums instead of looking up the string values for property names, label names, and relationship type names. This client does not use `--compact` currently. Create an issue to support this, we are currently waiting for a solution to https://github.com/luin/ioredis/issues/895
