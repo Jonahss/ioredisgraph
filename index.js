@@ -94,7 +94,7 @@ function resolveComunTypeEnum (columnTypeEnum) {
 // a single result will consist of an array with one element for each returned object in the original QUERY
 // for example: "... RETURN n, l, p" <- will return multiple rows/records, each of which will have n, l, and p.
 async function parseResult (columnHeaders, singleResult) {
-console.log('parseResult', 'headers:', columnHeaders, 'singleresult:', singleResult)
+console.log('parseResult', 'headers:', columnHeaders, 'singleresult:', singleResult, 'graphname', this.graphName)
   columns = columnHeaders.map(async (columnHeader, index) => {
     let resultType = resolveComunTypeEnum(columnHeader[0])
     let name = columnHeader[1]
@@ -171,6 +171,7 @@ async function resolvePropertyName (propertyNameId) {
 
 async function resolveLabelName (labelId) {
   if (!this.labelNames[labelId]) {
+    console.log('graphname?', this.graphName)
     let labelNames = await this.query(`CALL db.labels()`)
     this.labelNames = labelNames.map((prop) => prop.label)
     console.log('label names', labelNames)

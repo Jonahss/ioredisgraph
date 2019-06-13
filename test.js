@@ -27,7 +27,7 @@ test('response node parsing', async (t) => {
   let graph = new RedisGraph('nodeResponse')
   await graph.query(`CREATE (:person {name: 'Chuck'}), (:person {name: 'Austin'}), (:person {name: 'Zack'})`)
   let result = await graph.query(`MATCH (a:person) RETURN a, id(a)`)
-  console.log(JSON.stringify(result, null, 2))
+//  console.log(JSON.stringify(result, null, 2))
   t.truthy(result.length > 2)
   t.truthy(result[1]['a']['id'])
   t.truthy(result[1]['a']['name'])
@@ -35,11 +35,11 @@ test('response node parsing', async (t) => {
   t.truthy(result[1]['id(a)'])
 })
 
-test('response relation parsing', async (t) => {
+test.skip('response relation parsing', async (t) => {
   let graph = new RedisGraph('relationResponse')
   await graph.query(`CREATE (:person {name: 'Chuck'})-[:friendsWith]->(:person {name: 'Austin'})`)
   let result = await graph.query(`MATCH (:person)-[r:friendsWith]->(:person) RETURN r, id(r)`)
-  console.log(JSON.stringify(result, null, 2))
+//  console.log(JSON.stringify(result, null, 2))
   t.truthy(result.length > 0)
   t.truthy(!isNaN(result[0]['r']['id']))
   t.truthy(result[0]['r']['labels'][0] == 'friendsWith')
@@ -52,7 +52,7 @@ test('delete graph', async (t) => {
   t.truthy(await graph.delete())
 })
 
-test('explain', async (t) => {
+test.skip('explain', async (t) => {
   let graph = new RedisGraph('test')
   t.log(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
   t.truthy(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
