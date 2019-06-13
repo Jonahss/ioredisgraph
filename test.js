@@ -23,14 +23,17 @@ test('options constructor', async (t) => {
   t.truthy(await graph.query(`CREATE (:person {name: 'Chuckwudi'})`) instanceof Array)
 })
 
-test('response parsing', async (t) => {
+test.only('response parsing', async (t) => {
   let graph = new RedisGraph('response')
   await graph.query(`CREATE (:person {name: 'Chuck'}), (:person {name: 'Austin'}), (:person {name: 'Zack'})`)
   let result = await graph.query(`MATCH (a:person) RETURN a, id(a)`)
+  console.log(JSON.stringify(result))
   t.truthy(result.length > 2)
   t.truthy(result[0]['a.name'])
   t.truthy(result[0]['id(a)'])
 })
+
+//TODO add test parsing returned relationships
 
 test('delete graph', async (t) => {
   let graph = new RedisGraph('delete')
