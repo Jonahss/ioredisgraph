@@ -23,17 +23,28 @@ test('options constructor', async (t) => {
   t.truthy(await graph.query(`CREATE (:person {name: 'Chuckwudi'})`) instanceof Array)
 })
 
-test.only('response parsing', async (t) => {
-  let graph = new RedisGraph('response')
+test('response node parsing', async (t) => {
+  let graph = new RedisGraph('nodeResponse')
   await graph.query(`CREATE (:person {name: 'Chuck'}), (:person {name: 'Austin'}), (:person {name: 'Zack'})`)
   let result = await graph.query(`MATCH (a:person) RETURN a, id(a)`)
-  console.log(JSON.stringify(result))
+  console.log(JSON.stringify(result, null, 2))
   t.truthy(result.length > 2)
-  t.truthy(result[0]['a.name'])
-  t.truthy(result[0]['id(a)'])
+  t.truthy(result[1]['a']['id'])
+  t.truthy(result[1]['a']['name'])
+  t.truthy(result[1]['a']['labels'][0] == 'person')
+  t.truthy(result[1]['id(a)'])
 })
 
-//TODO add test parsing returned relationships
+test('response relation parsing', async (t) => {
+  let graph = new RedisGraph('relationResponse')
+  await graph.query(`CREATE (:person {name: 'Chuck'})-[:friendsWith]->(:person {name: 'Austin'})`)
+  let result = await graph.query(`MATCH (:person)-[r:friendsWith]->(:person) RETURN r, id(r)`)
+  console.log(JSON.stringify(result, null, 2))
+  t.truthy(result.length > 0)
+  t.truthy(!isNaN(result[0]['r']['id']))
+  t.truthy(result[0]['r']['labels'][0] == 'friendsWith')
+  t.truthy(!isNaN(result[0]['id(r)']))
+})
 
 test('delete graph', async (t) => {
   let graph = new RedisGraph('delete')
@@ -46,6 +57,3 @@ test('explain', async (t) => {
   t.log(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
   t.truthy(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
 })
-
-
-//test('')
