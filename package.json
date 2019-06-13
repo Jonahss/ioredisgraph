@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Jonahss/ioredisgraph#readme",
   "dependencies": {
     "camelcase": "^5.0.0",
-    "ioredis": "^4.3.0",
+    "ioredis": "^4.10.0",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
