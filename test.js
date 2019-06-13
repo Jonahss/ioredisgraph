@@ -23,7 +23,7 @@ test('options constructor', async (t) => {
   t.truthy(await graph.query(`CREATE (:person {name: 'Chuckwudi'})`) instanceof Array)
 })
 
-test.only('multiple instances stay separate', async (t) => {
+test('multiple instances stay separate', async (t) => {
   let a = new RedisGraph('a')
   let b = new RedisGraph('b')
   t.truthy(a.graphName == 'a')
@@ -49,17 +49,17 @@ test('response relation parsing', async (t) => {
 //  console.log(JSON.stringify(result, null, 2))
   t.truthy(result.length > 0)
   t.truthy(!isNaN(result[0]['r']['id']))
-  t.truthy(result[0]['r']['labels'][0] == 'friendsWith')
+  t.truthy(result[0]['r']['type'] == 'friendsWith')
   t.truthy(!isNaN(result[0]['id(r)']))
 })
 
-test.skip('delete graph', async (t) => {
+test('delete graph', async (t) => {
   let graph = new RedisGraph('delete')
   await graph.query(`CREATE (:person {name: 'Chuckwudi'})`)
   t.truthy(await graph.delete())
 })
 
-test.skip('explain', async (t) => {
+test('explain', async (t) => {
   let graph = new RedisGraph('test')
   t.log(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
   t.truthy(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
