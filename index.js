@@ -18,11 +18,12 @@ class RedisGraph extends Redis {
 
     // we use a special stored procedure to get these names, since the server responds with just index numbers for performance reasons
     this.propertyNames = []
-    this.labelNames = []
+    this.labelNames = Promise.resolve([])
     this.relationshipTypes = []
 
+    this._loadingLabelNames = false
+
     this.resolvePropertyName = resolvePropertyName.bind(this)
-    this.resolveLabelName = resolveLabelName.bind(this)
     this.resolveRelationshipType = resolveRelationshipType.bind(this)
     this.parseNode = parseNode.bind(this)
     this.parseRelation = parseRelation.bind(this)
@@ -64,6 +65,36 @@ class RedisGraph extends Redis {
 
   async explain (command) {
     return this.call('GRAPH.EXPLAIN', this.graphName, `${command}`)
+  }
+
+  async resolveLabelName (labelId) {
+    let labelName = (await this.labelNames)[labelId]
+    if (labelName) {
+      return labelName
+    }
+    // otherwise, we need to hydrate the label names from the server
+    // let's have any other callers wait until we're finished
+    await this.loadLabelNames()
+
+    return (await this.labelNames)[labelId]
+  }
+
+  async loadLabelNames () {
+    // if we're already loading, return the promise for the results
+    if (this._loadingLabelNames) {
+      return this._loadingLabelNames
+    }
+    // let's only do this once, have others wait
+    this._loadingLabelNames = new Promise(async (resolve) => {
+      console.log('loading label names')
+      let labelNames = await this.query(`CALL db.labels()`)
+      this.labelNames = labelNames.map((prop) => prop.label)
+      this._loadingLabelNames = false
+      console.log('label names loaded', labelNames, this.graphName)
+      resolve()
+    })
+
+    return this._loadingLabelNames
   }
 }
 
@@ -167,17 +198,6 @@ async function resolvePropertyName (propertyNameId) {
   }
 
   return this.propertyNames[propertyNameId]
-}
-
-async function resolveLabelName (labelId) {
-  if (!this.labelNames[labelId]) {
-    console.log('graphname?', this.graphName)
-    let labelNames = await this.query(`CALL db.labels()`)
-    this.labelNames = labelNames.map((prop) => prop.label)
-    console.log('label names', labelNames)
-  }
-
-  return this.labelNames[labelId]
 }
 
 async function resolveRelationshipType (relationshipTypeId) {
