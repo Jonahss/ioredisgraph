@@ -51,36 +51,6 @@ class RedisGraph extends Redis {
   async explain (command) {
     return this.call('GRAPH.EXPLAIN', this.graphName, `${command}`)
   }
-
-  async resolveLabelName (labelId) {
-    let labelName = (await this.labelNames)[labelId]
-    if (labelName) {
-      return labelName
-    }
-    // otherwise, we need to hydrate the label names from the server
-    // let's have any other callers wait until we're finished
-    await this.loadLabelNames()
-
-    return (await this.labelNames)[labelId]
-  }
-
-  async loadLabelNames () {
-    // if we're already loading, return the promise for the results
-    if (this._loadingLabelNames) {
-      return this._loadingLabelNames
-    }
-    // let's only do this once, have others wait
-    this._loadingLabelNames = new Promise(async (resolve) => {
-      console.log('loading label names')
-      let labelNames = await this.query(`CALL db.labels()`)
-      this.labelNames = labelNames.map((prop) => prop.label)
-      this._loadingLabelNames = false
-      console.log('label names loaded', labelNames, this.graphName)
-      resolve()
-    })
-
-    return this._loadingLabelNames
-  }
 }
 
 function parseMetaInformation (array) {
