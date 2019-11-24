@@ -4,7 +4,8 @@
   "description": "Node.js client for RedisGraph, by wrapping ioredis module",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "dev": "ava --watch"
   },
   "repository": {
     "type": "git",

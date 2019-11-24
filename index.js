@@ -2,6 +2,7 @@ let Redis = require('ioredis')
 let camelCase = require('camelcase')
 let _ = require('lodash')
 
+
 class RedisGraph extends Redis {
   constructor(graphName, ...args) {
     if (typeof graphName === 'object') {
@@ -40,15 +41,15 @@ class RedisGraph extends Redis {
     })
   }
 
-  async query (command) {
+  query (command) {
     return this.call('GRAPH.QUERY', this.graphName, `${command}`)
   }
 
-  async delete () {
+  delete () {
     return this.call('GRAPH.DELETE', this.graphName)
   }
 
-  async explain (command) {
+  explain (command) {
     return this.call('GRAPH.EXPLAIN', this.graphName, `${command}`)
   }
 }
@@ -84,6 +85,21 @@ function parseResult (columnHeaders, singleResult) {
   })
 
   return _.fromPairs(columns)
+}
+
+
+// add methods to Pipeline
+
+Redis.Pipeline.prototype.query = function (command) {
+  return this.call('GRAPH.QUERY', this.redis.graphName, `${command}`)
+}
+
+Redis.Pipeline.prototype.delete = function (command) {
+  return this.call('GRAPH.DELETE', this.redis.graphName)
+}
+
+Redis.Pipeline.prototype.explain = function (command) {
+  return this.call('GRAPH.EXPLAIN', this.redis.graphName, `${command}`)
 }
 
 module.exports = RedisGraph

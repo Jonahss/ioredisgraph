@@ -64,3 +64,43 @@ test('explain', async (t) => {
   t.log(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
   t.truthy(await graph.explain(`CREATE (:person {name: 'Chuckwudi'})`))
 })
+
+test('in memory pipelines', async (t) => {
+  let graph = new RedisGraph('pipelines')
+  let results = await graph.pipeline()
+    .query(`CREATE (:person {name: 'Chuck'})-[:friendsWith]->(:person {name: 'Austin'})`)
+    .query(`MATCH (p:person {name: 'Chuck'}) RETURN p`)
+    .query(`MATCH (p:person {name: 'Austin'}) RETURN p`)
+    .exec()
+
+  // results is an array, where each element of the array is the response to one of the commands in the pipeline
+  // each result element in an array like [error, result], where `error` can be an error encountered running the query
+  // see https://github.com/luin/ioredis#pipelining
+  t.truthy(results.length == 3)
+  t.falsy(results[0][0])
+  t.truthy(results[0][1].meta.nodesCreated == 2)
+  t.falsy(results[1][0])
+  t.truthy(results[1][1][0].p.name == 'Chuck')
+
+  graph.delete('pipelines')
+})
+
+test('transations using MULTI and EXEC', async (t) => {
+  let graph = new RedisGraph('transactions')
+  let results = await graph.multi()
+    .query(`CREATE (:person {name: 'Chuck'})-[:friendsWith]->(:person {name: 'Austin'})`)
+    .query(`MATCH (p:person {name: 'Chuck'}) RETURN p`)
+    .query(`MATCH (p:person {name: 'Austin'}) RETURN p`)
+    .exec()
+
+  // results is an array, where each element of the array is the response to one of the commands in the pipeline
+  // each result element in an array like [error, result], where `error` can be an error encountered running the query
+  // see https://github.com/luin/ioredis#transaction
+  t.truthy(results.length == 3)
+  t.falsy(results[0][0])
+  t.truthy(results[0][1].meta.nodesCreated == 2)
+  t.falsy(results[1][0])
+  t.truthy(results[1][1][0].p.name == 'Chuck')
+
+  graph.delete('transactions')
+})
