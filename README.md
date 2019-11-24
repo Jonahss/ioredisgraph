@@ -1,3 +1,5 @@
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/ioredisgraph?style=flat-square)
+
 # ioredisgraph #
 
 A javascript client for [RedisGraph](https://oss.redislabs.com/redisgraph/) based on the excellent [ioredis](https://github.com/luin/ioredis) client.
