@@ -3,6 +3,7 @@
 # ioredisgraph #
 
 A javascript client for [RedisGraph](https://oss.redislabs.com/redisgraph/) based on the excellent [ioredis](https://github.com/luin/ioredis) client.
+
 Literally based off ioredis. This module wraps ioredis, adds a couple commands, and returns an array of objects from each query (as well as the query meta information).
 
 ```
