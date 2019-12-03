@@ -28,7 +28,7 @@ class RedisGraph extends Redis {
       let parsedResults = []
       parsedResults.meta = metaInformation
 
-      if (result.length) { // if there are results to parse
+      if (result.length > 1) { // if there are results to parse
         let columnHeaders = result[0]
         let resultSet = result[1]
 
@@ -58,9 +58,11 @@ function parseMetaInformation (array) {
   meta = {}
   for (prop of array) {
     let [name, value] = prop.split(': ')
-    value = value.trim()
-    name = camelCase(name)
-    meta[name] = value
+    if(value) {
+      value = value.trim()
+      name = camelCase(name)
+      meta[name] = value
+    }
   }
   return meta
 }
