@@ -10,14 +10,17 @@ jobs:
     strategy:
       matrix:
         node-version: [8.x, 10.x, 12.x]
-
+    
+    services:
+      redisgraph:
+        image: redislabs/redisgraph:latest
+    
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: docker://redislabs/redisgraph:latest
     - name: npm install, build, and test
       run: |
         npm ci
