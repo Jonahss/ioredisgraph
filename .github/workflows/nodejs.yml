@@ -14,6 +14,8 @@ jobs:
     services:
       redisgraph:
         image: redislabs/redisgraph:latest
+        ports:
+          - 6379:6379
     
     steps:
     - uses: actions/checkout@v1
