@@ -1,6 +1,6 @@
 {
   "name": "ioredisgraph",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Node.js client for RedisGraph, using the ioredis module. Supports promises and transactions",
   "main": "index.js",
   "scripts": {
