@@ -1,5 +1,5 @@
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/ioredisgraph?style=flat-square)
-![Node CI](https://github.com/Jonahss/ioredisgraph/workflows/Node%20CI/badge.svg?branch=master)
+[![Node CI](https://github.com/Jonahss/ioredisgraph/workflows/Node%20CI/badge.svg?branch=master)](https://github.com/Jonahss/ioredisgraph/actions)
 [![npm version](https://badge.fury.io/js/ioredisgraph.svg)](https://badge.fury.io/js/ioredisgraph)
 
 # ioredisgraph #
