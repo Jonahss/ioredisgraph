@@ -83,7 +83,11 @@ function parseResult (columnHeaders, singleResult) {
       delete value.properties
     }
 
-    return [name, value]
+    try{
+      return [name, JSON.parse(value)]
+    }catch(error){
+      return [name, value]
+    }
   })
 
   return _.fromPairs(columns)
